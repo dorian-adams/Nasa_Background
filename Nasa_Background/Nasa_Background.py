@@ -16,7 +16,7 @@ def draw_text(description):
     draw_list = description.split(".")
     draw_list = draw_list[::-1]
     font = ImageFont.truetype("arial.ttf", 15)
-    image = Image.open("bg.png")
+    image = Image.open("bg.jpg")
     draw_image = ImageDraw.Draw(image)
     y = screen_resolution[1] - 35 # Position text just above task bar
     line_spacing = 25
@@ -24,7 +24,7 @@ def draw_text(description):
         sentence += "."
         draw_image.text((20,y), sentence.lstrip(), font=font)
         y -= line_spacing
-    image.save("bg.png")
+    image.save("bg.jpg")
 
 
 def get_nasa_background():
@@ -46,11 +46,11 @@ def get_nasa_background():
 
         # Resize the image, save, and set as background
         image = image.resize(screen_resolution)
-        image = image.save("bg.png")
+        image = image.save("bg.jpg")
         draw_text(image_description)
-        ctypes.windll.user32.SystemParametersInfoW.argtypes = [ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p, ctypes.c_uint]
-        ctypes.windll.user32.SystemParametersInfoW.restype = ctypes.wintypes.BOOL
-        ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE)
+        user.SystemParametersInfoW.argtypes = [ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p, ctypes.c_uint]
+        user.SystemParametersInfoW.restype = ctypes.wintypes.BOOL
+        user.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE)
 
     else:
         print("Connection error")
