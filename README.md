@@ -1,13 +1,12 @@
-Galaxy Background
+Galaxy Wallpaper
 ================
 
 ![Sample Background](https://github.com/dorian-adams/Nasa_Background/blob/master/screenshot.png)
 
-Galaxy Background utilizes NASA's Photo of the Day API to set your Window's desktop background to the best photos in the galaxy. :rocket:
+Galaxy Wallpaper utilizes NASA's Photo of the Day API to automatically set your Window's wallpaper to the best photos in the galaxy. :rocket:
 
 ## Features
-Utilizes:
-
+**Utilizes:**
 * Python
     * ctypes
     * PIL
