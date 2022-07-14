@@ -1,10 +1,10 @@
 import ctypes
 import requests
+import os
 from datetime import date
 from PIL import Image, ImageFont, ImageDraw
 
 
-image_path = ""
 user = ctypes.windll.user32
 screen_resolution = user.GetSystemMetrics(0), user.GetSystemMetrics(1)
 SPI_SETDESKWALLPAPER = 0x0014
@@ -13,6 +13,11 @@ SPIF_SENDWININICHANGE = 0x0002
 
 
 def draw_text(description):
+    """Appends text description to the background image.
+    
+    Args:
+        description: The text description, from the API, to be appended.
+    """
     draw_list = description.split(".")
     draw_list = draw_list[::-1]
     font = ImageFont.truetype("arial.ttf", 15)
@@ -28,10 +33,12 @@ def draw_text(description):
 
 
 def get_nasa_background():
+    """Queries NASA's Photo of Day API to download latest image."""
     today = date.today()
-    base_url = ""
+    base_url = "https://api.nasa.gov/planetary/apod?api_key="
+    api_key = os.environ.get('NASA_API_KEY')
     params_dict = {'date': today}
-    response = requests.get(base_url, params=params_dict)
+    response = requests.get(base_url + api_key, params=params_dict)
 
     if response.status_code == 200:
         try:
@@ -50,7 +57,7 @@ def get_nasa_background():
         draw_text(image_description)
         user.SystemParametersInfoW.argtypes = [ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p, ctypes.c_uint]
         user.SystemParametersInfoW.restype = ctypes.wintypes.BOOL
-        user.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE)
+        user.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, os.path.abspath("bg.jpg"), SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE)
 
     else:
         print("Connection error")
